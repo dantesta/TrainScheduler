@@ -1,0 +1,22 @@
+body {
+	background-image: url(../images/train.jpg);
+
+}
+
+.jumbotron {
+	background-blend-mode: multiply;
+	opacity: 0.9; 
+	border: 2px solid darkgreen;
+}
+
+
+.panel {
+	background-blend-mode: multiply;
+	opacity: 0.9;
+
+
+}
+
+.panel-heading {
+	background-color: orange;
+}
