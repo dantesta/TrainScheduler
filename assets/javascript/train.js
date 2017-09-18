@@ -22,7 +22,7 @@ $("#submitBtn").on("click", function(event) {
   // Grabs user input
   var trainName = $("#train-name-input").val().trim();
   var trainDest = $("#dest-input").val().trim();
-  var trainFirst = moment($("#first-input").val().trim(), "DD/MM/YY").format("X");
+  var trainFirst = moment($("#first-input").val().trim(),"HH:mm").format("X");
   var trainFreq = $("#freq-input").val().trim();
   console.log(trainFirst)
   // Creates local "temporary" object for holding employee data
@@ -47,6 +47,22 @@ $("#submitBtn").on("click", function(event) {
   $("#freq-input").val("");
 });
 
+var dataRef = firebase.database();
+var timeTrain = moment();
+
+    function timeUpdater() {
+      dataRef.ref().child('trains').once('value', function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+          timeTrain = moment().format('X');
+          dataRef.ref('trains/' + childSnapshot.key).update({
+          currentTime: timeTrain,
+          })
+        })    
+      });
+    };
+
+    setInterval(timeUpdater, 10000);
+
 // 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
 database.ref().on("child_added", function(childSnapshot) {
 
@@ -60,7 +76,7 @@ database.ref().on("child_added", function(childSnapshot) {
 
 
 
-  var trainStartMoment = moment.unix(trainFirst).format("MM/DD/YY");
+  var trainStartMoment = moment.unix(trainFirst).format("HH:mm");
 
   var trainSchedule = moment().diff(moment.unix(trainFirst, "X"), "months");
 
@@ -70,7 +86,7 @@ database.ref().on("child_added", function(childSnapshot) {
 
   // Add each train's data into the table
   $("#trainTable > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDest + "</td><td>" +
-  trainStartMoment + "</td><td>" + trainSchedule + "</td><td>" + trainFreq + "</td><td>" + trainTime + "</td></tr>");
+  trainStartMoment + "</td><td>" + trainSchedule + "</td><td>" + trainFreq + "</td><td>");
 });
 
 
