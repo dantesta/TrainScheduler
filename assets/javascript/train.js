@@ -15,7 +15,7 @@ $(document).ready(function() {
 
 var database = firebase.database();
 
-// 2. Button for adding Employees
+// Button for adding Trains
 $("#submitBtn").on("click", function(event) {
   event.preventDefault();
 
@@ -25,7 +25,7 @@ $("#submitBtn").on("click", function(event) {
   var trainFirst = moment($("#first-input").val().trim(),"HH:mm").format("X");
   var trainFreq = $("#freq-input").val().trim();
   console.log(trainFirst)
-  // Creates local "temporary" object for holding employee data
+  // Creates local "temporary" object for holding data
   var newTrain = {
     name: trainName,
     dest: trainDest,
@@ -33,7 +33,7 @@ $("#submitBtn").on("click", function(event) {
     freq: trainFreq
   };
 
-  // Uploads employee data to the database
+  // Uploads data to the database
   database.ref().push(newTrain);
 
 
@@ -63,7 +63,7 @@ var timeTrain = moment();
 
     setInterval(timeUpdater, 10000);
 
-// 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
+
 database.ref().on("child_added", function(childSnapshot) {
 
   console.log(childSnapshot.val());
@@ -78,7 +78,7 @@ database.ref().on("child_added", function(childSnapshot) {
 
   var trainStartMoment = moment.unix(trainFirst).format("HH:mm");
 
-  var trainSchedule = moment().diff(moment.unix(trainFirst, "X"), "months");
+  var trainSchedule = moment().diff(moment.unix(trainFirst, "X"));
 
 
   var trainTime = trainSchedule * trainFreq;
